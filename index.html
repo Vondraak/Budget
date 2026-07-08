@@ -61,13 +61,13 @@
     border-radius:16px;
     padding:22px 22px 20px;
     position:relative;
-    overflow:hidden;
   }
   .summary-card::before{
     content:"";
     position:absolute;
     top:0;left:0;right:0;
     height:3px;
+    border-radius:16px 16px 0 0;
     background:var(--bar);
   }
   .summary-card.income{--bar:linear-gradient(90deg,var(--blue),#a3b4ff);}
@@ -79,6 +79,71 @@
   .summary-card.expense .value{color:var(--red);}
   .summary-card.surplus .value{color:var(--green);}
   .summary-card .sub-value{font-size:13px;color:var(--sub);margin-top:6px;}
+
+  .tooltip-trigger{cursor:help;}
+  .tooltip-trigger .hint{
+    display:inline-block;
+    margin-left:6px;
+    font-size:11px;
+    font-style:italic;
+    color:var(--gold);
+    opacity:.75;
+  }
+  .tooltip-popup{
+    position:absolute;
+    top:calc(100% + 12px);
+    left:50%;
+    width:min(300px,86vw);
+    transform:translateX(-50%) translateY(-6px);
+    background:#1a1e29;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:16px 18px;
+    box-shadow:0 16px 40px rgba(0,0,0,0.5);
+    z-index:60;
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transition:opacity .16s ease, transform .16s ease, visibility .16s;
+  }
+  .tooltip-trigger:hover .tooltip-popup,
+  .tooltip-trigger:focus-within .tooltip-popup{
+    opacity:1;
+    visibility:visible;
+    transform:translateX(-50%) translateY(0);
+    pointer-events:auto;
+  }
+  .tooltip-popup::before{
+    content:"";
+    position:absolute;
+    top:-6px;
+    left:50%;
+    transform:translateX(-50%) rotate(45deg);
+    width:12px;height:12px;
+    background:#1a1e29;
+    border-left:1px solid var(--line);
+    border-top:1px solid var(--line);
+  }
+  .tooltip-title{
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--gold);
+    font-weight:700;
+    margin-bottom:10px;
+  }
+  .tooltip-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  .tooltip-table td{padding:4.5px 0;border-bottom:1px solid rgba(255,255,255,0.06);color:var(--ink);}
+  .tooltip-table tr:last-child td{border-bottom:none;}
+  .tooltip-table td:last-child{text-align:right;font-variant-numeric:tabular-nums;color:var(--sub);}
+  .tooltip-table tr.tooltip-total td{
+    border-top:1px solid var(--gold);
+    border-bottom:none;
+    padding-top:9px;
+    font-weight:700;
+    color:var(--gold);
+  }
+  .tooltip-table tr.tooltip-total td:last-child{color:var(--gold);}
 
   .foot-note{font-size:12px;color:var(--sub);margin-bottom:28px;line-height:1.5;}
   .foot-note strong{color:var(--ink);}
@@ -179,7 +244,7 @@
     .bar-label{width:110px;}
     h1{font-size:26px;}
     .yearly-grid{grid-template-columns:1fr;}
-    .operator{transform:rotate(90deg);}
+    .operator{transform:none;}
   }
 </style>
 </head>
@@ -196,18 +261,39 @@
       <div class="value">$10,408</div>
       <div class="sub-value">Best Buy + LED contract only</div>
     </div>
-    <div class="summary-card expense">
+    <div class="summary-card expense tooltip-trigger" tabindex="0">
       <div class="label">Monthly Expenses</div>
-      <div class="value">$8,886</div>
-      <div class="sub-value">$106,632 / year</div>
+      <div class="value">$9,169</div>
+      <div class="sub-value">$110,028 / year <span class="hint">hover for breakdown</span></div>
+      <div class="tooltip-popup">
+        <div class="tooltip-title">Full Monthly Expense Breakdown</div>
+        <table class="tooltip-table">
+          <tr><td>Mortgage</td><td>$3,274</td></tr>
+          <tr><td>Electricity (est.)</td><td>$125</td></tr>
+          <tr><td>Natural gas / heat (est.)</td><td>$85</td></tr>
+          <tr><td>Water &amp; sewer (est.)</td><td>$63</td></tr>
+          <tr><td>Trash, recycling &amp; organics (est.)</td><td>$36</td></tr>
+          <tr><td>4Runner payment</td><td>$860</td></tr>
+          <tr><td>BMW payment</td><td>$545</td></tr>
+          <tr><td>Bike payment</td><td>$364</td></tr>
+          <tr><td>Truck insurance</td><td>$190</td></tr>
+          <tr><td>Other car insurance</td><td>$337</td></tr>
+          <tr><td>Lifetime (membership)</td><td>$450</td></tr>
+          <tr><td>T-Mobile</td><td>$390</td></tr>
+          <tr><td>Other subscriptions</td><td>$200</td></tr>
+          <tr><td>Food</td><td>$1,750</td></tr>
+          <tr><td>Gas</td><td>$500</td></tr>
+          <tr class="tooltip-total"><td>Total</td><td>$9,169</td></tr>
+        </table>
+      </div>
     </div>
     <div class="summary-card surplus">
       <div class="label">Monthly Surplus</div>
-      <div class="value">$1,522</div>
+      <div class="value">$1,239</div>
       <div class="sub-value">Recurring only — see yearly total below</div>
     </div>
   </div>
-  <div class="foot-note">The $8,000/yr security contract is <strong>not</strong> spread across months — it's held out and applied once, annually, to the yearly surplus total at the bottom of this page.</div>
+  <div class="foot-note">The $8,000/yr misc. contracts income is <strong>not</strong> spread across months — it's held out and applied once, annually, to the yearly surplus total at the bottom of this page.</div>
 
   <div class="two-col">
     <div class="card">
@@ -217,21 +303,21 @@
         <tr><td>Best Buy (W-2, $1,248/wk)</td><td class="num">$5,408</td><td class="num">$64,896</td></tr>
         <tr><td>LED Contract</td><td class="num">$5,000</td><td class="num">$60,000</td></tr>
         <tr class="total"><td>Recurring Monthly Income</td><td class="num">$10,408</td><td class="num">$124,896</td></tr>
-        <tr class="lump"><td>Security Contract (annual, not amortized)</td><td class="num">&mdash;</td><td class="num">$8,000</td></tr>
+        <tr class="lump"><td>Misc. Contracts (annual, not amortized)</td><td class="num">&mdash;</td><td class="num">$8,000</td></tr>
       </table>
-      <div class="note">Best Buy pay is weekly ($1,248 &times; 52 weeks &divide; 12). Security contract is booked once a year, not divided into the monthly figures.</div>
+      <div class="note">Best Buy pay is weekly ($1,248 &times; 52 weeks &divide; 12). Misc. Contracts income is booked once a year, not divided into the monthly figures.</div>
     </div>
 
     <div class="card">
       <h2>Expenses by Category</h2>
       <table>
         <tr><th>Category</th><th class="num">Monthly</th><th class="num">Yearly</th></tr>
-        <tr><td>Housing (mortgage + house)</td><td class="num">$3,300</td><td class="num">$39,600</td></tr>
+        <tr><td>Housing (mortgage + utilities + trash)</td><td class="num">$3,583</td><td class="num">$42,996</td></tr>
         <tr><td>Vehicle payments</td><td class="num">$1,769</td><td class="num">$21,228</td></tr>
         <tr><td>Auto insurance</td><td class="num">$527</td><td class="num">$6,324</td></tr>
         <tr><td>Subscriptions</td><td class="num">$1,040</td><td class="num">$12,480</td></tr>
         <tr><td>Food &amp; gas</td><td class="num">$2,250</td><td class="num">$27,000</td></tr>
-        <tr class="total"><td>Total Expenses</td><td class="num">$8,886</td><td class="num">$106,632</td></tr>
+        <tr class="total"><td>Total Expenses</td><td class="num">$9,169</td><td class="num">$110,028</td></tr>
       </table>
     </div>
   </div>
@@ -240,7 +326,11 @@
     <h2>Full Expense Detail</h2>
     <table>
       <tr><th>Item</th><th>Category</th><th class="num">Monthly</th><th class="num">Yearly</th></tr>
-      <tr><td>Mortgage &amp; house</td><td><span class="tag">Housing</span></td><td class="num">$3,300</td><td class="num">$39,600</td></tr>
+      <tr><td>Mortgage</td><td><span class="tag">Housing</span></td><td class="num">$3,274</td><td class="num">$39,288</td></tr>
+      <tr><td>Electricity (est.)</td><td><span class="tag">Housing</span></td><td class="num">$125</td><td class="num">$1,500</td></tr>
+      <tr><td>Natural gas / heat (est.)</td><td><span class="tag">Housing</span></td><td class="num">$85</td><td class="num">$1,020</td></tr>
+      <tr><td>Water &amp; sewer (est.)</td><td><span class="tag">Housing</span></td><td class="num">$63</td><td class="num">$756</td></tr>
+      <tr><td>Trash, recycling &amp; organics (est.)</td><td><span class="tag">Housing</span></td><td class="num">$36</td><td class="num">$432</td></tr>
       <tr><td>4Runner payment</td><td><span class="tag">Vehicle</span></td><td class="num">$860</td><td class="num">$10,320</td></tr>
       <tr><td>BMW payment</td><td><span class="tag">Vehicle</span></td><td class="num">$545</td><td class="num">$6,540</td></tr>
       <tr><td>Bike payment</td><td><span class="tag">Vehicle</span></td><td class="num">$364</td><td class="num">$4,368</td></tr>
@@ -251,51 +341,52 @@
       <tr><td>Other subscriptions</td><td><span class="tag">Subscription</span></td><td class="num">$200</td><td class="num">$2,400</td></tr>
       <tr><td>Food</td><td><span class="tag">Living</span></td><td class="num">$1,750</td><td class="num">$21,000</td></tr>
       <tr><td>Gas</td><td><span class="tag">Living</span></td><td class="num">$500</td><td class="num">$6,000</td></tr>
-      <tr class="total"><td>Total</td><td></td><td class="num">$8,886</td><td class="num">$106,632</td></tr>
+      <tr class="total"><td>Total</td><td></td><td class="num">$9,169</td><td class="num">$110,028</td></tr>
     </table>
+    <div class="note">Utility/trash figures are Bloomington, MN-area estimates for a 1976-built, ~2,000 sq ft home: electricity via Xcel Energy (~1,000 kWh/mo &asymp; $125), natural gas heat via CenterPoint Energy (annualized average &asymp; $85/mo), water &amp; sewer at Bloomington's published rate for 6,000 gal/mo ($63.12), and city trash/recycling/organics service on a medium cart ($35.98). Actual bills will vary by season, insulation, and usage.</div>
   </div>
 
   <div class="card">
     <h2>Where the Money Goes</h2>
-    <div class="bar-row"><div class="bar-label">Housing</div><div class="bar-track"><div class="bar-fill" style="width:37.1%;background:linear-gradient(90deg,#6f8dff,#a3b4ff);"></div></div><div class="bar-amt">$3,300</div></div>
-    <div class="bar-row"><div class="bar-label">Food &amp; gas</div><div class="bar-track"><div class="bar-fill" style="width:25.3%;background:linear-gradient(90deg,#d4af5a,#f0d38a);"></div></div><div class="bar-amt">$2,250</div></div>
-    <div class="bar-row"><div class="bar-label">Vehicle payments</div><div class="bar-track"><div class="bar-fill" style="width:19.9%;background:linear-gradient(90deg,#9b6fff,#c3a8ff);"></div></div><div class="bar-amt">$1,769</div></div>
-    <div class="bar-row"><div class="bar-label">Subscriptions</div><div class="bar-track"><div class="bar-fill" style="width:11.7%;background:linear-gradient(90deg,#ff7fb0,#ffb3d1);"></div></div><div class="bar-amt">$1,040</div></div>
-    <div class="bar-row"><div class="bar-label">Auto insurance</div><div class="bar-track"><div class="bar-fill" style="width:5.9%;background:linear-gradient(90deg,#3ddc97,#8ff0c8);"></div></div><div class="bar-amt">$527</div></div>
+    <div class="bar-row"><div class="bar-label">Housing</div><div class="bar-track"><div class="bar-fill" style="width:39.1%;background:linear-gradient(90deg,#6f8dff,#a3b4ff);"></div></div><div class="bar-amt">$3,583</div></div>
+    <div class="bar-row"><div class="bar-label">Food &amp; gas</div><div class="bar-track"><div class="bar-fill" style="width:24.5%;background:linear-gradient(90deg,#d4af5a,#f0d38a);"></div></div><div class="bar-amt">$2,250</div></div>
+    <div class="bar-row"><div class="bar-label">Vehicle payments</div><div class="bar-track"><div class="bar-fill" style="width:19.3%;background:linear-gradient(90deg,#9b6fff,#c3a8ff);"></div></div><div class="bar-amt">$1,769</div></div>
+    <div class="bar-row"><div class="bar-label">Subscriptions</div><div class="bar-track"><div class="bar-fill" style="width:11.3%;background:linear-gradient(90deg,#ff7fb0,#ffb3d1);"></div></div><div class="bar-amt">$1,040</div></div>
+    <div class="bar-row"><div class="bar-label">Auto insurance</div><div class="bar-track"><div class="bar-fill" style="width:5.7%;background:linear-gradient(90deg,#3ddc97,#8ff0c8);"></div></div><div class="bar-amt">$527</div></div>
   </div>
 
   <div class="card">
     <h2>Income Needed for a Bigger Monthly Surplus</h2>
-    <p class="note">Based on recurring income only (Best Buy + LED), you're running a surplus of <strong>$1,522/mo</strong>. Extra income needed on top of that to reach various monthly surplus targets:</p>
+    <p class="note">Based on recurring income only (Best Buy + LED), you're running a surplus of <strong>$1,239/mo</strong>. Extra income needed on top of that to reach various monthly surplus targets:</p>
     <table class="goal-table">
       <tr><th>Target Monthly Surplus</th><th class="num">Extra Income Needed / Month</th><th class="num">Extra Income Needed / Year</th></tr>
-      <tr><td>$3,000</td><td class="num pos">+$1,478</td><td class="num pos">+$17,736</td></tr>
-      <tr class="highlight"><td>$4,000</td><td class="num pos">+$2,478</td><td class="num pos">+$29,736</td></tr>
-      <tr class="highlight"><td>$5,000</td><td class="num pos">+$3,478</td><td class="num pos">+$41,736</td></tr>
-      <tr><td>$6,000</td><td class="num pos">+$4,478</td><td class="num pos">+$53,736</td></tr>
+      <tr><td>$3,000</td><td class="num pos">+$1,761</td><td class="num pos">+$21,132</td></tr>
+      <tr class="highlight"><td>$4,000</td><td class="num pos">+$2,761</td><td class="num pos">+$33,132</td></tr>
+      <tr class="highlight"><td>$5,000</td><td class="num pos">+$3,761</td><td class="num pos">+$45,132</td></tr>
+      <tr><td>$6,000</td><td class="num pos">+$4,761</td><td class="num pos">+$57,132</td></tr>
     </table>
-    <div class="note">Reminder: the security contract isn't in this monthly baseline — it lands separately below as a yearly lump sum, so your actual cushion is a bit better than the monthly numbers alone suggest.</div>
+    <div class="note">Reminder: the misc. contracts income isn't in this monthly baseline — it lands separately below as a yearly lump sum, so your actual cushion is a bit better than the monthly numbers alone suggest.</div>
   </div>
 
   <div class="card yearly-card">
-    <h2>Yearly Surplus (Security Contract Included)</h2>
+    <h2>Yearly Surplus (Misc. Contracts Included)</h2>
     <div class="yearly-grid">
       <div class="yearly-item base">
         <div class="k">Recurring Surplus &times; 12</div>
-        <div class="v">$18,264</div>
+        <div class="v">$14,868</div>
       </div>
       <div class="operator">+</div>
       <div class="yearly-item plus">
-        <div class="k">Security Contract</div>
+        <div class="k">Misc. Contracts</div>
         <div class="v">$8,000</div>
       </div>
       <div class="operator">=</div>
       <div class="yearly-item final">
         <div class="k">Total Yearly Surplus</div>
-        <div class="v">$26,264</div>
+        <div class="v">$22,868</div>
       </div>
     </div>
-    <div class="note">The security contract is booked once, at year-end, on top of the $1,522/mo recurring surplus — never divided into the monthly budget above.</div>
+    <div class="note">The misc. contracts income is booked once, at year-end, on top of the $1,239/mo recurring surplus — never divided into the monthly budget above.</div>
   </div>
 
 </div>
