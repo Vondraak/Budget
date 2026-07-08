@@ -53,7 +53,7 @@
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:16px;
-    margin-bottom:32px;
+    margin-bottom:14px;
   }
   .summary-card{
     background:linear-gradient(180deg,var(--card),rgba(20,23,31,0.6));
@@ -79,6 +79,9 @@
   .summary-card.expense .value{color:var(--red);}
   .summary-card.surplus .value{color:var(--green);}
   .summary-card .sub-value{font-size:13px;color:var(--sub);margin-top:6px;}
+
+  .foot-note{font-size:12px;color:var(--sub);margin-bottom:28px;line-height:1.5;}
+  .foot-note strong{color:var(--ink);}
 
   .card{
     background:var(--card);
@@ -125,6 +128,10 @@
     padding-top:14px;
     color:var(--gold);
   }
+  tr.lump td{
+    color:var(--sub);
+    font-style:italic;
+  }
   .tag{
     display:inline-block;
     font-size:10.5px;
@@ -135,6 +142,7 @@
     font-weight:600;
     letter-spacing:.02em;
   }
+  .tag.lump{background:rgba(111,141,255,0.14);color:var(--blue);}
 
   .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
 
@@ -149,16 +157,29 @@
   .goal-table tr.highlight td:first-child{border-radius:8px 0 0 8px;}
   .goal-table tr.highlight td:last-child{border-radius:0 8px 8px 0;}
 
+  .yearly-card{
+    background:linear-gradient(135deg,rgba(212,175,90,0.08),rgba(20,23,31,0.4));
+    border:1px solid rgba(212,175,90,0.25);
+  }
+  .yearly-grid{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:14px;align-items:center;}
+  .yearly-item{text-align:center;padding:14px 8px;}
+  .yearly-item .k{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--sub);margin-bottom:8px;}
+  .yearly-item .v{font-size:20px;font-weight:700;}
+  .yearly-item.plus .v, .yearly-item.eq .v{color:var(--gold);}
+  .yearly-item.base .v{color:var(--sub);}
+  .yearly-item.final .v{color:var(--green);font-size:24px;}
+  .operator{text-align:center;font-size:22px;color:var(--sub);font-weight:300;}
+
   .note{font-size:12.5px;color:var(--sub);line-height:1.6;margin-top:12px;}
   .note strong{color:var(--ink);}
-
-  .pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
 
   @media (max-width:640px){
     .summary-grid{grid-template-columns:1fr;}
     .two-col{grid-template-columns:1fr;}
     .bar-label{width:110px;}
     h1{font-size:26px;}
+    .yearly-grid{grid-template-columns:1fr;}
+    .operator{transform:rotate(90deg);}
   }
 </style>
 </head>
@@ -172,20 +193,21 @@
   <div class="summary-grid">
     <div class="summary-card income">
       <div class="label">Monthly Income</div>
-      <div class="value">$11,075</div>
-      <div class="sub-value">$132,896 / year</div>
+      <div class="value">$10,408</div>
+      <div class="sub-value">Best Buy + LED contract only</div>
     </div>
     <div class="summary-card expense">
       <div class="label">Monthly Expenses</div>
-      <div class="value">$8,819</div>
-      <div class="sub-value">$105,828 / year</div>
+      <div class="value">$8,886</div>
+      <div class="sub-value">$106,632 / year</div>
     </div>
     <div class="summary-card surplus">
-      <div class="label">Current Surplus</div>
-      <div class="value">$2,256</div>
-      <div class="sub-value">$27,068 / year</div>
+      <div class="label">Monthly Surplus</div>
+      <div class="value">$1,522</div>
+      <div class="sub-value">Recurring only — see yearly total below</div>
     </div>
   </div>
+  <div class="foot-note">The $8,000/yr security contract is <strong>not</strong> spread across months — it's held out and applied once, annually, to the yearly surplus total at the bottom of this page.</div>
 
   <div class="two-col">
     <div class="card">
@@ -194,10 +216,10 @@
         <tr><th>Source</th><th class="num">Monthly</th><th class="num">Yearly</th></tr>
         <tr><td>Best Buy (W-2, $1,248/wk)</td><td class="num">$5,408</td><td class="num">$64,896</td></tr>
         <tr><td>LED Contract</td><td class="num">$5,000</td><td class="num">$60,000</td></tr>
-        <tr><td>Security Contract (misc)</td><td class="num">$667</td><td class="num">$8,000</td></tr>
-        <tr class="total"><td>Total Income</td><td class="num">$11,075</td><td class="num">$132,896</td></tr>
+        <tr class="total"><td>Recurring Monthly Income</td><td class="num">$10,408</td><td class="num">$124,896</td></tr>
+        <tr class="lump"><td>Security Contract (annual, not amortized)</td><td class="num">&mdash;</td><td class="num">$8,000</td></tr>
       </table>
-      <div class="note">Best Buy pay is weekly ($1,248 &times; 52 weeks &divide; 12). Security contract is a lump $8,000/yr averaged monthly.</div>
+      <div class="note">Best Buy pay is weekly ($1,248 &times; 52 weeks &divide; 12). Security contract is booked once a year, not divided into the monthly figures.</div>
     </div>
 
     <div class="card">
@@ -205,11 +227,11 @@
       <table>
         <tr><th>Category</th><th class="num">Monthly</th><th class="num">Yearly</th></tr>
         <tr><td>Housing (mortgage + house)</td><td class="num">$3,300</td><td class="num">$39,600</td></tr>
-        <tr><td>Vehicle payments</td><td class="num">$1,709</td><td class="num">$20,508</td></tr>
-        <tr><td>Auto insurance</td><td class="num">$770</td><td class="num">$9,240</td></tr>
+        <tr><td>Vehicle payments</td><td class="num">$1,769</td><td class="num">$21,228</td></tr>
+        <tr><td>Auto insurance</td><td class="num">$527</td><td class="num">$6,324</td></tr>
         <tr><td>Subscriptions</td><td class="num">$1,040</td><td class="num">$12,480</td></tr>
-        <tr><td>Food &amp; gas</td><td class="num">$2,000</td><td class="num">$24,000</td></tr>
-        <tr class="total"><td>Total Expenses</td><td class="num">$8,819</td><td class="num">$105,828</td></tr>
+        <tr><td>Food &amp; gas</td><td class="num">$2,250</td><td class="num">$27,000</td></tr>
+        <tr class="total"><td>Total Expenses</td><td class="num">$8,886</td><td class="num">$106,632</td></tr>
       </table>
     </div>
   </div>
@@ -219,40 +241,61 @@
     <table>
       <tr><th>Item</th><th>Category</th><th class="num">Monthly</th><th class="num">Yearly</th></tr>
       <tr><td>Mortgage &amp; house</td><td><span class="tag">Housing</span></td><td class="num">$3,300</td><td class="num">$39,600</td></tr>
-      <tr><td>4Runner payment</td><td><span class="tag">Vehicle</span></td><td class="num">$800</td><td class="num">$9,600</td></tr>
+      <tr><td>4Runner payment</td><td><span class="tag">Vehicle</span></td><td class="num">$860</td><td class="num">$10,320</td></tr>
       <tr><td>BMW payment</td><td><span class="tag">Vehicle</span></td><td class="num">$545</td><td class="num">$6,540</td></tr>
       <tr><td>Bike payment</td><td><span class="tag">Vehicle</span></td><td class="num">$364</td><td class="num">$4,368</td></tr>
-      <tr><td>Truck insurance</td><td><span class="tag">Insurance</span></td><td class="num">$400</td><td class="num">$4,800</td></tr>
-      <tr><td>Other car insurance</td><td><span class="tag">Insurance</span></td><td class="num">$370</td><td class="num">$4,440</td></tr>
+      <tr><td>Truck insurance</td><td><span class="tag">Insurance</span></td><td class="num">$190</td><td class="num">$2,280</td></tr>
+      <tr><td>Other car insurance</td><td><span class="tag">Insurance</span></td><td class="num">$337</td><td class="num">$4,044</td></tr>
       <tr><td>Lifetime (membership)</td><td><span class="tag">Subscription</span></td><td class="num">$450</td><td class="num">$5,400</td></tr>
       <tr><td>T-Mobile</td><td><span class="tag">Subscription</span></td><td class="num">$390</td><td class="num">$4,680</td></tr>
       <tr><td>Other subscriptions</td><td><span class="tag">Subscription</span></td><td class="num">$200</td><td class="num">$2,400</td></tr>
-      <tr><td>Food</td><td><span class="tag">Living</span></td><td class="num">$1,500</td><td class="num">$18,000</td></tr>
+      <tr><td>Food</td><td><span class="tag">Living</span></td><td class="num">$1,750</td><td class="num">$21,000</td></tr>
       <tr><td>Gas</td><td><span class="tag">Living</span></td><td class="num">$500</td><td class="num">$6,000</td></tr>
-      <tr class="total"><td>Total</td><td></td><td class="num">$8,819</td><td class="num">$105,828</td></tr>
+      <tr class="total"><td>Total</td><td></td><td class="num">$8,886</td><td class="num">$106,632</td></tr>
     </table>
   </div>
 
   <div class="card">
     <h2>Where the Money Goes</h2>
-    <div class="bar-row"><div class="bar-label">Housing</div><div class="bar-track"><div class="bar-fill" style="width:37.4%;background:linear-gradient(90deg,#6f8dff,#a3b4ff);"></div></div><div class="bar-amt">$3,300</div></div>
-    <div class="bar-row"><div class="bar-label">Food &amp; gas</div><div class="bar-track"><div class="bar-fill" style="width:22.7%;background:linear-gradient(90deg,#d4af5a,#f0d38a);"></div></div><div class="bar-amt">$2,000</div></div>
-    <div class="bar-row"><div class="bar-label">Vehicle payments</div><div class="bar-track"><div class="bar-fill" style="width:19.4%;background:linear-gradient(90deg,#9b6fff,#c3a8ff);"></div></div><div class="bar-amt">$1,709</div></div>
-    <div class="bar-row"><div class="bar-label">Subscriptions</div><div class="bar-track"><div class="bar-fill" style="width:11.8%;background:linear-gradient(90deg,#ff7fb0,#ffb3d1);"></div></div><div class="bar-amt">$1,040</div></div>
-    <div class="bar-row"><div class="bar-label">Auto insurance</div><div class="bar-track"><div class="bar-fill" style="width:8.7%;background:linear-gradient(90deg,#3ddc97,#8ff0c8);"></div></div><div class="bar-amt">$770</div></div>
+    <div class="bar-row"><div class="bar-label">Housing</div><div class="bar-track"><div class="bar-fill" style="width:37.1%;background:linear-gradient(90deg,#6f8dff,#a3b4ff);"></div></div><div class="bar-amt">$3,300</div></div>
+    <div class="bar-row"><div class="bar-label">Food &amp; gas</div><div class="bar-track"><div class="bar-fill" style="width:25.3%;background:linear-gradient(90deg,#d4af5a,#f0d38a);"></div></div><div class="bar-amt">$2,250</div></div>
+    <div class="bar-row"><div class="bar-label">Vehicle payments</div><div class="bar-track"><div class="bar-fill" style="width:19.9%;background:linear-gradient(90deg,#9b6fff,#c3a8ff);"></div></div><div class="bar-amt">$1,769</div></div>
+    <div class="bar-row"><div class="bar-label">Subscriptions</div><div class="bar-track"><div class="bar-fill" style="width:11.7%;background:linear-gradient(90deg,#ff7fb0,#ffb3d1);"></div></div><div class="bar-amt">$1,040</div></div>
+    <div class="bar-row"><div class="bar-label">Auto insurance</div><div class="bar-track"><div class="bar-fill" style="width:5.9%;background:linear-gradient(90deg,#3ddc97,#8ff0c8);"></div></div><div class="bar-amt">$527</div></div>
   </div>
 
   <div class="card">
-    <h2>Income Needed for a Bigger Surplus</h2>
-    <p class="note">You're already running a surplus of about <strong>$2,256/mo ($27,068/yr)</strong>. Here's the extra income needed on top of current earnings to reach various monthly surplus targets:</p>
+    <h2>Income Needed for a Bigger Monthly Surplus</h2>
+    <p class="note">Based on recurring income only (Best Buy + LED), you're running a surplus of <strong>$1,522/mo</strong>. Extra income needed on top of that to reach various monthly surplus targets:</p>
     <table class="goal-table">
       <tr><th>Target Monthly Surplus</th><th class="num">Extra Income Needed / Month</th><th class="num">Extra Income Needed / Year</th></tr>
-      <tr><td>$3,000</td><td class="num pos">+$744</td><td class="num pos">+$8,932</td></tr>
-      <tr class="highlight"><td>$4,000</td><td class="num pos">+$1,744</td><td class="num pos">+$20,932</td></tr>
-      <tr class="highlight"><td>$5,000</td><td class="num pos">+$2,744</td><td class="num pos">+$32,932</td></tr>
-      <tr><td>$6,000</td><td class="num pos">+$3,744</td><td class="num pos">+$44,932</td></tr>
+      <tr><td>$3,000</td><td class="num pos">+$1,478</td><td class="num pos">+$17,736</td></tr>
+      <tr class="highlight"><td>$4,000</td><td class="num pos">+$2,478</td><td class="num pos">+$29,736</td></tr>
+      <tr class="highlight"><td>$5,000</td><td class="num pos">+$3,478</td><td class="num pos">+$41,736</td></tr>
+      <tr><td>$6,000</td><td class="num pos">+$4,478</td><td class="num pos">+$53,736</td></tr>
     </table>
-    <div class="note">Highlighted rows mark a "few thousand" surplus range. For a $4,000&ndash;$5,000/mo cushion, you'd need roughly $1,750&ndash;$2,750 more per month ($21K&ndash;$33K/yr) beyond your current three income streams &mdash; e.g., a rate increase on the LED contract, a second security contract, or added Best Buy hours.</div>
+    <div class="note">Reminder: the security contract isn't in this monthly baseline — it lands separately below as a yearly lump sum, so your actual cushion is a bit better than the monthly numbers alone suggest.</div>
+  </div>
+
+  <div class="card yearly-card">
+    <h2>Yearly Surplus (Security Contract Included)</h2>
+    <div class="yearly-grid">
+      <div class="yearly-item base">
+        <div class="k">Recurring Surplus &times; 12</div>
+        <div class="v">$18,264</div>
+      </div>
+      <div class="operator">+</div>
+      <div class="yearly-item plus">
+        <div class="k">Security Contract</div>
+        <div class="v">$8,000</div>
+      </div>
+      <div class="operator">=</div>
+      <div class="yearly-item final">
+        <div class="k">Total Yearly Surplus</div>
+        <div class="v">$26,264</div>
+      </div>
+    </div>
+    <div class="note">The security contract is booked once, at year-end, on top of the $1,522/mo recurring surplus — never divided into the monthly budget above.</div>
   </div>
 
 </div>
