@@ -80,7 +80,14 @@
   .summary-card.surplus .value{color:var(--green);}
   .summary-card .sub-value{font-size:13px;color:var(--sub);margin-top:6px;}
 
-  .tooltip-trigger{cursor:help;}
+  .tooltip-trigger{cursor:help;position:relative;}
+  .cat-trigger{
+    display:inline-block;
+    border-bottom:1px dashed var(--sub);
+  }
+  .cat-trigger .tooltip-popup{
+    width:min(260px,86vw);
+  }
   .tooltip-trigger .hint{
     display:inline-block;
     margin-left:6px;
@@ -312,11 +319,71 @@
       <h2>Expenses by Category</h2>
       <table>
         <tr><th>Category</th><th class="num">Monthly</th><th class="num">Yearly</th></tr>
-        <tr><td>Housing (mortgage + utilities + trash)</td><td class="num">$3,583</td><td class="num">$42,996</td></tr>
-        <tr><td>Vehicle payments</td><td class="num">$1,769</td><td class="num">$21,228</td></tr>
-        <tr><td>Auto insurance</td><td class="num">$527</td><td class="num">$6,324</td></tr>
-        <tr><td>Subscriptions</td><td class="num">$1,040</td><td class="num">$12,480</td></tr>
-        <tr><td>Food &amp; gas</td><td class="num">$2,250</td><td class="num">$27,000</td></tr>
+        <tr><td>
+          <span class="cat-trigger tooltip-trigger" tabindex="0">Housing (mortgage + utilities + trash)
+            <div class="tooltip-popup">
+              <div class="tooltip-title">What's in Housing</div>
+              <table class="tooltip-table">
+                <tr><td>Mortgage</td><td>$3,274</td></tr>
+                <tr><td>Electricity (est.)</td><td>$125</td></tr>
+                <tr><td>Natural gas / heat (est.)</td><td>$85</td></tr>
+                <tr><td>Water &amp; sewer (est.)</td><td>$63</td></tr>
+                <tr><td>Trash, recycling &amp; organics (est.)</td><td>$36</td></tr>
+                <tr class="tooltip-total"><td>Total</td><td>$3,583</td></tr>
+              </table>
+            </div>
+          </span>
+        </td><td class="num">$3,583</td><td class="num">$42,996</td></tr>
+        <tr><td>
+          <span class="cat-trigger tooltip-trigger" tabindex="0">Vehicle payments
+            <div class="tooltip-popup">
+              <div class="tooltip-title">What's in Vehicle Payments</div>
+              <table class="tooltip-table">
+                <tr><td>4Runner payment</td><td>$860</td></tr>
+                <tr><td>BMW payment</td><td>$545</td></tr>
+                <tr><td>Bike payment</td><td>$364</td></tr>
+                <tr class="tooltip-total"><td>Total</td><td>$1,769</td></tr>
+              </table>
+            </div>
+          </span>
+        </td><td class="num">$1,769</td><td class="num">$21,228</td></tr>
+        <tr><td>
+          <span class="cat-trigger tooltip-trigger" tabindex="0">Auto insurance
+            <div class="tooltip-popup">
+              <div class="tooltip-title">What's in Auto Insurance</div>
+              <table class="tooltip-table">
+                <tr><td>Truck insurance</td><td>$190</td></tr>
+                <tr><td>Other car insurance</td><td>$337</td></tr>
+                <tr class="tooltip-total"><td>Total</td><td>$527</td></tr>
+              </table>
+            </div>
+          </span>
+        </td><td class="num">$527</td><td class="num">$6,324</td></tr>
+        <tr><td>
+          <span class="cat-trigger tooltip-trigger" tabindex="0">Subscriptions
+            <div class="tooltip-popup">
+              <div class="tooltip-title">What's in Subscriptions</div>
+              <table class="tooltip-table">
+                <tr><td>Lifetime (membership)</td><td>$450</td></tr>
+                <tr><td>T-Mobile</td><td>$390</td></tr>
+                <tr><td>Other subscriptions</td><td>$200</td></tr>
+                <tr class="tooltip-total"><td>Total</td><td>$1,040</td></tr>
+              </table>
+            </div>
+          </span>
+        </td><td class="num">$1,040</td><td class="num">$12,480</td></tr>
+        <tr><td>
+          <span class="cat-trigger tooltip-trigger" tabindex="0">Food &amp; gas
+            <div class="tooltip-popup">
+              <div class="tooltip-title">What's in Food &amp; Gas</div>
+              <table class="tooltip-table">
+                <tr><td>Food</td><td>$1,750</td></tr>
+                <tr><td>Gas</td><td>$500</td></tr>
+                <tr class="tooltip-total"><td>Total</td><td>$2,250</td></tr>
+              </table>
+            </div>
+          </span>
+        </td><td class="num">$2,250</td><td class="num">$27,000</td></tr>
         <tr class="total"><td>Total Expenses</td><td class="num">$9,169</td><td class="num">$110,028</td></tr>
       </table>
     </div>
@@ -348,11 +415,61 @@
 
   <div class="card">
     <h2>Where the Money Goes</h2>
-    <div class="bar-row"><div class="bar-label">Housing</div><div class="bar-track"><div class="bar-fill" style="width:39.1%;background:linear-gradient(90deg,#6f8dff,#a3b4ff);"></div></div><div class="bar-amt">$3,583</div></div>
-    <div class="bar-row"><div class="bar-label">Food &amp; gas</div><div class="bar-track"><div class="bar-fill" style="width:24.5%;background:linear-gradient(90deg,#d4af5a,#f0d38a);"></div></div><div class="bar-amt">$2,250</div></div>
-    <div class="bar-row"><div class="bar-label">Vehicle payments</div><div class="bar-track"><div class="bar-fill" style="width:19.3%;background:linear-gradient(90deg,#9b6fff,#c3a8ff);"></div></div><div class="bar-amt">$1,769</div></div>
-    <div class="bar-row"><div class="bar-label">Subscriptions</div><div class="bar-track"><div class="bar-fill" style="width:11.3%;background:linear-gradient(90deg,#ff7fb0,#ffb3d1);"></div></div><div class="bar-amt">$1,040</div></div>
-    <div class="bar-row"><div class="bar-label">Auto insurance</div><div class="bar-track"><div class="bar-fill" style="width:5.7%;background:linear-gradient(90deg,#3ddc97,#8ff0c8);"></div></div><div class="bar-amt">$527</div></div>
+    <div class="bar-row"><div class="bar-label cat-trigger tooltip-trigger" tabindex="0">Housing
+        <div class="tooltip-popup">
+          <div class="tooltip-title">What's in Housing</div>
+          <table class="tooltip-table">
+            <tr><td>Mortgage</td><td>$3,274</td></tr>
+            <tr><td>Electricity (est.)</td><td>$125</td></tr>
+            <tr><td>Natural gas / heat (est.)</td><td>$85</td></tr>
+            <tr><td>Water &amp; sewer (est.)</td><td>$63</td></tr>
+            <tr><td>Trash, recycling &amp; organics (est.)</td><td>$36</td></tr>
+            <tr class="tooltip-total"><td>Total</td><td>$3,583</td></tr>
+          </table>
+        </div>
+      </div><div class="bar-track"><div class="bar-fill" style="width:39.1%;background:linear-gradient(90deg,#6f8dff,#a3b4ff);"></div></div><div class="bar-amt">$3,583</div></div>
+    <div class="bar-row"><div class="bar-label cat-trigger tooltip-trigger" tabindex="0">Food &amp; gas
+        <div class="tooltip-popup">
+          <div class="tooltip-title">What's in Food &amp; Gas</div>
+          <table class="tooltip-table">
+            <tr><td>Food</td><td>$1,750</td></tr>
+            <tr><td>Gas</td><td>$500</td></tr>
+            <tr class="tooltip-total"><td>Total</td><td>$2,250</td></tr>
+          </table>
+        </div>
+      </div><div class="bar-track"><div class="bar-fill" style="width:24.5%;background:linear-gradient(90deg,#d4af5a,#f0d38a);"></div></div><div class="bar-amt">$2,250</div></div>
+    <div class="bar-row"><div class="bar-label cat-trigger tooltip-trigger" tabindex="0">Vehicle payments
+        <div class="tooltip-popup">
+          <div class="tooltip-title">What's in Vehicle Payments</div>
+          <table class="tooltip-table">
+            <tr><td>4Runner payment</td><td>$860</td></tr>
+            <tr><td>BMW payment</td><td>$545</td></tr>
+            <tr><td>Bike payment</td><td>$364</td></tr>
+            <tr class="tooltip-total"><td>Total</td><td>$1,769</td></tr>
+          </table>
+        </div>
+      </div><div class="bar-track"><div class="bar-fill" style="width:19.3%;background:linear-gradient(90deg,#9b6fff,#c3a8ff);"></div></div><div class="bar-amt">$1,769</div></div>
+    <div class="bar-row"><div class="bar-label cat-trigger tooltip-trigger" tabindex="0">Subscriptions
+        <div class="tooltip-popup">
+          <div class="tooltip-title">What's in Subscriptions</div>
+          <table class="tooltip-table">
+            <tr><td>Lifetime (membership)</td><td>$450</td></tr>
+            <tr><td>T-Mobile</td><td>$390</td></tr>
+            <tr><td>Other subscriptions</td><td>$200</td></tr>
+            <tr class="tooltip-total"><td>Total</td><td>$1,040</td></tr>
+          </table>
+        </div>
+      </div><div class="bar-track"><div class="bar-fill" style="width:11.3%;background:linear-gradient(90deg,#ff7fb0,#ffb3d1);"></div></div><div class="bar-amt">$1,040</div></div>
+    <div class="bar-row"><div class="bar-label cat-trigger tooltip-trigger" tabindex="0">Auto insurance
+        <div class="tooltip-popup">
+          <div class="tooltip-title">What's in Auto Insurance</div>
+          <table class="tooltip-table">
+            <tr><td>Truck insurance</td><td>$190</td></tr>
+            <tr><td>Other car insurance</td><td>$337</td></tr>
+            <tr class="tooltip-total"><td>Total</td><td>$527</td></tr>
+          </table>
+        </div>
+      </div><div class="bar-track"><div class="bar-fill" style="width:5.7%;background:linear-gradient(90deg,#3ddc97,#8ff0c8);"></div></div><div class="bar-amt">$527</div></div>
   </div>
 
   <div class="card">
